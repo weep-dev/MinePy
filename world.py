@@ -1,6 +1,7 @@
 from settings import *
 from world_objects.chunk import Chunk
 
+
 class World:
     def __init__(self, app):
         self.app = app
@@ -8,7 +9,10 @@ class World:
         self.voxels = np.empty([WORLD_VOL, CHUNK_VOL], dtype='uint8')
         self.build_chunks()
         self.build_chunk_mesh()
-    
+
+    def update(self):
+        pass
+
     def build_chunks(self):
         for x in range(WORLD_W):
             for y in range(WORLD_H):
@@ -18,19 +22,48 @@ class World:
                     chunk_index = x + WORLD_W * z + WORLD_AREA * y
                     self.chunks[chunk_index] = chunk
 
-                    #put the voxels in a separete array
+                    # put the chunk voxels in a separate array
                     self.voxels[chunk_index] = chunk.build_voxels()
 
-                    #get pointer to voxels
+                    # get pointer to voxels
                     chunk.voxels = self.voxels[chunk_index]
 
     def build_chunk_mesh(self):
         for chunk in self.chunks:
             chunk.build_mesh()
 
-    def update(self):
-        pass
-
     def render(self):
         for chunk in self.chunks:
             chunk.render()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

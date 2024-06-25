@@ -8,7 +8,6 @@ from player import Player
 from textures import Textures
 
 
-
 class VoxelEngine:
     def __init__(self):
         pg.init()
@@ -49,13 +48,13 @@ class VoxelEngine:
         pg.display.set_caption(f'{self.clock.get_fps() :.0f}')
 
     def render(self):
-        self.ctx.clear(color=BG_COLORS)
+        self.ctx.clear(color=BG_COLOR)
         self.scene.render()
         pg.display.flip()
 
     def handle_events(self):
         for event in pg.event.get():
-            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.type == pg.K_ESCAPE):
+            if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 self.is_running = False
 
     def run(self):

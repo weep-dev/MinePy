@@ -1,7 +1,7 @@
-import numpy as np
-
 from settings import *
 from meshes.chunk_mesh import ChunkMesh
+import random
+
 
 class Chunk:
     def __init__(self, world, position):
@@ -16,7 +16,7 @@ class Chunk:
     def get_model_matrix(self):
         m_model = glm.translate(glm.mat4(), glm.vec3(self.position) * CHUNK_SIZE)
         return m_model
-    
+
     def set_uniform(self):
         self.mesh.program['m_model'].write(self.m_model)
 
@@ -29,24 +29,71 @@ class Chunk:
             self.mesh.render()
 
     def build_voxels(self):
-        #empy chunk
+        # empty chunk
         voxels = np.zeros(CHUNK_VOL, dtype='uint8')
 
-        #fill chunk
+        # fill chunk
         cx, cy, cz = glm.ivec3(self.position) * CHUNK_SIZE
+        rng = random.randrange(1, 100)
 
         for x in range(CHUNK_SIZE):
+            wx = x + cx
             for z in range(CHUNK_SIZE):
-                wx = x + cx
                 wz = z + cz
                 world_height = int(glm.simplex(glm.vec2(wx, wz) * 0.01) * 32 + 32)
                 local_height = min(world_height - cy, CHUNK_SIZE)
 
                 for y in range(local_height):
                     wy = y + cy
-                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = wy + 1
+                    voxels[x + CHUNK_SIZE * z + CHUNK_AREA * y] = rng
 
         if np.any(voxels):
             self.is_empty = False
 
         return voxels
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
